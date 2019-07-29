@@ -25,7 +25,7 @@ create_path_rules() {
      s+=/hot-cluster/$i=hot-backend-$i,
   done
   s=${s%?};
-  gcloud compute url-maps add-path-matcher test-http-lb --default-service test-backend --path-matcher-name path-matcher-1 --path-rules $s --new-hosts "*" --delete-orphaned-path-matcher
+  gcloud compute url-maps add-path-matcher hot-http-lb --default-service test-backend --path-matcher-name path-matcher-1 --path-rules $s --new-hosts "*" --delete-orphaned-path-matcher
 }
 
 main(){
