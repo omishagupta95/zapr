@@ -3,8 +3,8 @@ set -x
 
 get_data() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/Coldcluster/matcherreduced-$metadata.kch  /mnt/md0/matcher.kch
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/Coldcluster/prefilter-$metadata.kch /mnt/md0/prefilter.kch
+    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/Coldcluster/$metadata/matcherreduced-$metadata.kch  /mnt/md0/matcher.kch
+    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/Coldcluster/$metadata/prefilter-$metadata.kch /mnt/md0/prefilter.kch
 }
 
 copy_data() {
