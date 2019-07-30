@@ -24,7 +24,7 @@ create_path_rules() {
   for ((i=1;i<=$1;i++)); do
     s+=/cold-cluster/$i=cold-backend-$i,
   done
-  s=${s%?};
+  s=${s%?}; // To remove the last comma
   gcloud compute url-maps add-path-matcher cold-http-lb --default-service test-backend --path-matcher-name path-matcher-1 --path-rules $s --new-hosts "*" --delete-orphaned-path-matcher
 }
 
