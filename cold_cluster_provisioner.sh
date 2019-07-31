@@ -6,7 +6,7 @@ create_template() {
 }
 
 create_instance_group(){
-	gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc
+	gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
 }
 
 create_backend_service(){
