@@ -5,6 +5,8 @@ get_data() {
     gsutil -m cp gs://zapr_bucket/hotcluster/$metadata/hotcluster.txt /opt/kyoto/hotcluster.txt
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/hotcluster/$metadata/matcher.kch  /opt/kyoto/matcher.kch
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/hotcluster/$metadata/prefilter.kch  /opt/kyoto/prefilter.kch
+    sudo sed -i "s/metadata/$metadata/" /etc/nginx/sites-enabled/default
+    sudo service nginx restart
 }
 main() {
     sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
