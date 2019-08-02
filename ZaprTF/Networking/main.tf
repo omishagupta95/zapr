@@ -64,6 +64,9 @@ resource "google_compute_firewall" "mongo" {
   }
 
 }
+provisioner "local-exec" {
+    command = "bash ./path-to-file"
+  }
 
 
 /*
