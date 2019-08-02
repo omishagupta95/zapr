@@ -77,7 +77,6 @@ resource "google_compute_firewall" "http" {
   }
 
    source_ranges = ["0.0.0.0/0"]
-
    source_tags = ["http-server"]
 }
 
