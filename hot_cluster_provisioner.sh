@@ -10,12 +10,12 @@ create_instance_group(){
 }
 
 create_backend_service(){
-	gcloud compute backend-services create $1 --health-checks=router-hc --port-name=tcp8082 --protocol=HTTP --global
+	gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
 }
 
 attach_backend() {
 	gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-region=asia-south1 --global
-	gcloud compute instance-groups managed set-named-ports $2 --named-ports "tcp8082:8082" --region=asia-south1
+	gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1
 
 }
 
