@@ -23,14 +23,14 @@ attach_dummy_backend() {
 
 main(){
 for ((i=1; i<=$1; i++)); do
-	attach_dummy_backend test-backend $2-cluster-unmanaged-instance-group
+	attach_dummy_backend test-backend 
 	delete_backend_service $2-backend-$i
 	delete_instance_group $2-group-$i
     	delete_template $2-temp-$i
     done
 }
 
-read -p "which resources you want deprovision, hot or cold (case senstive)" type
+read -p "which resources you want deprovision, hot or cold (case sensitive)" type
 read -p "Enter the number of templates you want to delete: " count
 delete_path_matcher $type
 main $count $type
