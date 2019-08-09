@@ -14,6 +14,7 @@ update_tar() {
        sudo rm -rf /etc/supervisor/conf.d/*
        rm -rf /opt/zapr/prod-active-song-revealer/
        src_tar_location=gs://zapr_bucket/tarballs/cold_ubuntu_auto_deploy.tar.gz
+       sudo mkdir /opt/temp
        temp_tar_download_location=/opt/temp/
        dest_location=/opt/zapr/
        gsutil cp $src_tar_location $temp_tar_download_location
