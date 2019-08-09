@@ -20,6 +20,7 @@ update_tar() {
        gsutil cp $src_tar_location $temp_tar_download_location
        cd $temp_tar_download_location
        tar -xzvf hot_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
+       sudo supervisorctl restart all
 }
 
 update_nginx() {
