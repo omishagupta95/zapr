@@ -7,6 +7,20 @@ get_data() {
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/hotcluster/$metadata/prefilter.kch  /opt/kyoto/prefilter.kch
 }
 
+update_tar() {
+       sudo supervisorctl stop all
+       #Clear all the older artifacts
+       rm -rf /opt/kyoto/*
+       sudo rm -rf /etc/supervisor/conf.d/*
+       rm -rf /opt/zapr/prod-active-song-revealer/
+       src_tar_location=gs://zapr_bucket/tarballs/hot_ubuntu_auto_deploy.tar.gz
+       temp_tar_download_location=/opt/temp/
+       dest_location=/opt/zapr/
+       gsutil cp $src_tar_location $temp_tar_download_location
+       cd $temp_tar_download_location
+       tar -xzvf hot_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
+}
+
 update_nginx() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
     sudo sed -i "s/metadata/$metadata/" /etc/nginx/sites-enabled/default
@@ -14,6 +28,7 @@ update_nginx() {
 }    
 
 main() {
+    update_tar
     sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
     /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
     get_data
