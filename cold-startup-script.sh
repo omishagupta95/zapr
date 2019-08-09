@@ -7,6 +7,22 @@ get_data() {
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/Coldcluster/$metadata/prefilter-$metadata.kch /mnt/md0/prefilter.kch
 }
 
+update_tar() {
+       sudo supervisorctl stop all
+       #Clear all the older artifacts
+       rm -rf /mnt/md0/*
+       sudo rm -rf /etc/supervisor/conf.d/*
+       rm -rf /opt/zapr/prod-active-song-revealer/
+       src_tar_location=gs://zapr_bucket/tarballs/cold_ubuntu_auto_deploy.tar.gz
+       temp_tar_download_location=/opt/temp/
+       dest_location=/opt/zapr/
+       gsutil cp $src_tar_location $temp_tar_download_location
+       cd $temp_tar_download_location
+       tar -xzvf cold_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
+       sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/prefilter.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+       sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+}
+
 update_nginx() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
     sudo sed -i "s/metadata/$metadata/" /etc/nginx/sites-enabled/default
@@ -16,9 +32,11 @@ update_nginx() {
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
   .//root/script/md0.sh
+  update_tar
   get_data
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
   ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
+
 copy_data
