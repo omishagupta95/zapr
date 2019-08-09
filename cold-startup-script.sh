@@ -21,7 +21,7 @@ update_tar() {
        cd $temp_tar_download_location
        tar -xzvf cold_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
        sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/prefilter.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
-       sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+       sudo sed -i "s|/opt/bin/matcher.kch|/mnt/md0/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
 }
 
 update_nginx() {
