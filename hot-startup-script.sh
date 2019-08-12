@@ -20,7 +20,7 @@ update_tar() {
        gsutil cp $src_tar_location $temp_tar_download_location
        cd $temp_tar_download_location
        tar -xzvf hot_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
-       sudo sed -i "s|ue-adtech-graphite-1.zapr.com|172.16.15.226|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+       sudo sed -i "s|ue-adtech-graphite-1.zapr.com|172.16.15.226|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
        sudo supervisorctl restart all
 }
 
