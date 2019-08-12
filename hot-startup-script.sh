@@ -39,6 +39,8 @@ main() {
     sed -i '/  - name: get ec2 facts/,/var=out/d' /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml
     ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
     ansible-playbook /opt/zapr/prod-active-song-revealer/scripts/nginx/nginx_hot.yml
+    sudo sed -i "s|^    location .*$|    location /hotcluster/${metadata}|" /etc/nginx/sites-enabled/default   
+    sudo sed -i "s|^            rewrite .*$|            rewrite ^/hotcluster/${metadata}/(.*) /\$1 break;|" /etc/nginx/sites-enabled/default
     sudo service nginx reload
 }
 main
