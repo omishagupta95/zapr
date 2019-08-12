@@ -38,6 +38,7 @@ copy_data() {
   get_data
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
+  sed -i '/  - name: get ec2 facts/,/var=out/d' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
   ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
 
