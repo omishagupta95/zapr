@@ -32,6 +32,13 @@ update_nginx() {
     sudo service nginx restart
 }    
 
+update_song_revealer() {
+ sudo sed -i '22s/.*/#  -  name: get ec2 facts /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml 
+ sudo sed -i '23s/.*/#     action: ec2_metadata_fact/' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
+ sudo sed -i '24s/.*/#     register: out /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
+ sudo sed -i '25s/.*/#  -  debug: var=out /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
+} 
+
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
   .//root/script/md0.sh
@@ -39,7 +46,7 @@ copy_data() {
   get_data
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
-  sed -i '/  - name: get ec2 facts/,/var=out/d' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
+  update_song_revealer
   ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
 
