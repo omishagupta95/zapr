@@ -38,7 +38,7 @@ copy_data() {
   get_data
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
-  ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
+  ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
 
 copy_data
