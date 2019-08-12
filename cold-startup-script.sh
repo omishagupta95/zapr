@@ -23,7 +23,6 @@ update_tar() {
        sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/prefilter.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
        sudo sed -i "s|/opt/bin/matcher.kch|/mnt/md0/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
        sudo sed -i "s|10.1.1.40|172.16.15.226|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
-       sudo supervisorctl restart all
 }
 
 update_nginx() {
