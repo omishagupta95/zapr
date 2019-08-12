@@ -37,7 +37,6 @@ main() {
     update_nginx
     mkdir -p /opt/zapr/prod-active-song-revealer/logs
     sed -i '/  - name: get ec2 facts/,/var=out/d' /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml
-    sed -i '/    - name: modify/,/modify_template.sh/d' /opt/zapr/prod-active-song-revealer/scripts/nginx/nginx_hot.yml
     ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
     ansible-playbook /opt/zapr/prod-active-song-revealer/scripts/nginx/nginx_hot.yml
     sudo service nginx reload
