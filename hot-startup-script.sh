@@ -25,7 +25,8 @@ update_tar() {
 
 update_nginx() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
-    sudo sed -i "s/metadata/$metadata/" /etc/nginx/sites-enabled/default
+    sudo sed -i "s|^    location .*$|    location /hotcluster/${metadata}|" /etc/nginx/sites-enabled/default   
+    sudo sed -i "s|^            rewrite .*$|            rewrite ^/hotcluster/${metadata}/(.*) /\$1 break;|" /etc/nginx/sites-enabled/default
     sudo service nginx restart
 }    
 
@@ -34,13 +35,10 @@ main() {
     sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
     /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
     get_data
-    update_nginx
     mkdir -p /opt/zapr/prod-active-song-revealer/logs
     sed -i '/  - name: get ec2 facts/,/var=out/d' /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml
     ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
     ansible-playbook /opt/zapr/prod-active-song-revealer/scripts/nginx/nginx_hot.yml
-    sudo sed -i "s|^    location .*$|    location /hotcluster/${metadata}|" /etc/nginx/sites-enabled/default   
-    sudo sed -i "s|^            rewrite .*$|            rewrite ^/hotcluster/${metadata}/(.*) /\$1 break;|" /etc/nginx/sites-enabled/default
-    sudo service nginx reload
+    update_nginx
 }
 main
