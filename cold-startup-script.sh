@@ -27,8 +27,8 @@ update_tar() {
 
 update_nginx() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
-    sudo sed -i "s|^    location .*$|    location /hotcluster/${metadata}|" /etc/nginx/sites-enabled/default
-    sudo sed -i "s|^            rewrite .*$|            rewrite ^/hotcluster/${metadata}/(.*) /\$1 break;|" /etc/nginx/sites-enabled/default
+    sudo sed -i "s|^    location .*$|    location /coldcluster/${metadata}|" /etc/nginx/sites-enabled/default
+    sudo sed -i "s|^            rewrite .*$|            rewrite ^/coldcluster/${metadata}/(.*) /\$1 break;|" /etc/nginx/sites-enabled/default
     sudo service nginx restart
 }    
 
