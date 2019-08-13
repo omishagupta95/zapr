@@ -56,6 +56,7 @@ main() {
     get_data
     mkdir -p /opt/zapr/prod-active-song-revealer/logs
     update_song_revealer
+    update_song_revealer_config
     ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
     ansible-playbook /opt/zapr/prod-active-song-revealer/scripts/nginx/nginx_hot.yml
     update_nginx
