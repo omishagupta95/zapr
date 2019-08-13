@@ -37,6 +37,18 @@ update_song_revealer() {
  sudo sed -i '25s/.*/#  -  debug: var=out /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/hot/song-revealer.yml
 } 
 
+update_song_revealer_config() {
+sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|isEC2=true| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|requireMongoCredential=true| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataMongoDbName=admin| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataMongoDbUserName=mongo-admin| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataCacheRefreshInterval=600| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetaDataMongoCollection=metadata| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetaDataMongoCacheMaxSize=10| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+cat ./mongo-credentials.txt >> /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+}
+
 main() {
     update_tar
     sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
