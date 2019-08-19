@@ -38,10 +38,16 @@ update_song_revealer() {
 } 
 
 update_song_revealer_config() {
-sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com |mongoHostnames=172.16.0.22 |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|isEC2=true |isEC2=false\nget.mongo.password.from.parameter.store=false |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetadataMongoDbName=admin |mediaMetadataMongoDbName=admin\nmediaMetadataMongoDbPassword=admin |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|cold.cluster.parition.data.url|# cold.cluster.parition.data.url|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com|# mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|isEC2=true|# isEC2=true |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|requireMongoCredential=true|# requireMongoCredential=true|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataMongoDbName=admin|# mediaMetadataMongoDbName=admin|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataMongoDbUserName=mongo-admin|# mediaMetadataMongoDbUserName=mongo-admin|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataCacheRefreshInterval=600|# mediaMetadataCacheRefreshInterval=600|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetaDataMongoCollection=metadata|# mediaMetaDataMongoCollection=metadata|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetaDataMongoCacheMaxSize=10|# mediaMetaDataMongoCacheMaxSize=10|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "52s|.*|#mongo creds \nmongoHostnames=172.16.0.22\nisEC2=false\nrequireMongoCredential=false\nget.mongo.password.from.parameter.store=false\nmediaMetadataMongoDbName=admin\nmediaMetadataMongoDbPassword=admin\nmediaMetadataMongoDbUserName=mongo-admin\nmediaMetadataCacheRefreshInterval=600\nmediaMetaDataMongoCollection=metadata\nmediaMetaDataMongoCacheMaxSize=10|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|cold.cluster.parition.data.url|# cold.cluster.parition.data.url|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2j2
 }
 
 main() {
