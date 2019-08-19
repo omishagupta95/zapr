@@ -38,15 +38,10 @@ update_song_revealer() {
 } 
 
 update_song_revealer_config() {
-sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|isEC2=true| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|requireMongoCredential=true| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetadataMongoDbName=admin| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetadataMongoDbUserName=mongo-admin| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetadataCacheRefreshInterval=600| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetaDataMongoCollection=metadata| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-sudo sed -i "s|mediaMetaDataMongoCacheMaxSize=10| |d" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
-cat ./mongo-credentials.txt >> /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com |mongoHostnames=172.16.0.22 |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|isEC2=true |isEC2=false\nget.mongo.password.from.parameter.store=false |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|mediaMetadataMongoDbName=admin |mediaMetadataMongoDbName=admin\nmediaMetadataMongoDbPassword=admin |g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|cold.cluster.parition.data.url|# cold.cluster.parition.data.url|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
 }
 
 main() {
