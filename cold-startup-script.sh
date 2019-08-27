@@ -60,7 +60,7 @@ copy_data() {
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
   update_song_revealer_config
   update_song_revealer
-  ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
+  sudo ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
 
 copy_data
