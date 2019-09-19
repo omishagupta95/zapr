@@ -33,7 +33,6 @@ update_nginx() {
 }    
 
 update_song_revealer() {
- sudo sed -i "s|http://169.254.169.254/latest/user-data|http://169.254.169.254/0.1/meta-data/attributes/partition|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
  sudo sed -i '22s/.*/#  -  name: get ec2 facts /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml 
  sudo sed -i '23s/.*/#     action: ec2_metadata_fact/' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
  sudo sed -i '24s/.*/#     register: out /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
@@ -41,7 +40,9 @@ update_song_revealer() {
 } 
 
 update_song_revealer_config() {
- sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com|# mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com |g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+sudo sed -i "s|http://169.254.169.254/latest/user-data|http://169.254.169.254/0.1/meta-data/attributes/partition|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
+sudo sed -i "s|se-platform-kafka-cluster-1-broker-1.zapr.com:9092|172.16.15.226:9092|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+sudo sed -i "s|mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com|# mongoHostnames=ue-prod-polestar-mongo-secondary.zapr.com |g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
 sudo sed -i "s|isEC2=true|# isEC2=true|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
 sudo sed -i "s|requireMongoCredential=true|# requireMongoCredential=true |g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
 sudo sed -i "s|mediaMetadataMongoDbName=admin|# mediaMetadataMongoDbName=admin |g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
