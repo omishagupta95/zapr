@@ -33,6 +33,7 @@ update_nginx() {
 }    
 
 update_song_revealer() {
+ sudo sed -i "s|http://169.254.169.254/latest/user-data|http://169.254.169.254/0.1/meta-data/attributes/partition|g" /opt/zapr/prod-active-song-revealer/config/prod/active/hot/song-revealer-config.j2
  sudo sed -i '22s/.*/#  -  name: get ec2 facts /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml 
  sudo sed -i '23s/.*/#     action: ec2_metadata_fact/' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
  sudo sed -i '24s/.*/#     register: out /' /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml
