@@ -1,5 +1,11 @@
 #!/bin/bash
 set -x
+
+update_fstab() {
+    sudo sed -i "s|35|60|g" /etc/fstab
+    sudo mount -o remount tmpfs
+}
+
 get_data() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
     gsutil -m cp gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/hotcluster.txt /opt/kyoto/hotcluster.txt
@@ -54,6 +60,7 @@ sudo sed -i "s|cold.cluster.parition.data.url|# cold.cluster.parition.data.url|g
 }
 
 main() {
+    update_fstab
     update_tar
     sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
     /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
