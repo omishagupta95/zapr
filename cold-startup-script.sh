@@ -1,6 +1,14 @@
 #!/bin/bash
 set -x
 
+mount_disk() {
+    sudo mkfs.ext4 -F /dev/sdb
+    sudo mkdir -p /mnt/md0
+    sudo mount /dev/sdb /mnt/md0
+    sudo chmod a+w /mnt/md0
+    echo UUID=`sudo blkid -s UUID -o value /dev/disk/by-id/google-local-ssd-0` /mnt/disks/md0 ext4 discard,defaults,nofail 0 2 | sudo tee -a /etc/fstab
+}
+
 get_data() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/matcherreduced-$metadata.kch  /mnt/md0/matcher.kch
@@ -56,7 +64,8 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
-  .//root/script/md0.sh
+  mount_disk
+#  .//root/script/md0.sh
   update_tar
   get_data
   update_nginx
