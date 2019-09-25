@@ -56,6 +56,8 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
+  sudo umount /mnt/mdo
+  sudo rm -r /mnt/md0
   .//root/script/md0.sh
   update_tar
   get_data
