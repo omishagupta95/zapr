@@ -3,6 +3,7 @@ set -x
 
 update_fstab() {
     sudo sed -i "s|35|60|g" /etc/fstab
+    sudo mount -t tmpfs -o size=60G tmpfs /opt/kyoto
     sudo mount -o remount tmpfs
 }
 
