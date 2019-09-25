@@ -2,11 +2,10 @@
 set -x
 
 mount_disk() {
-    sudo mkfs.ext4 -F /dev/sdb
+    sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
     sudo mkdir -p /mnt/md0
-    sudo mount /dev/sdb /mnt/md0
+    sudo mount -o discard,defaults /dev/sdb /mnt/md0
     sudo chmod a+w /mnt/md0
-    echo UUID=`sudo blkid -s UUID -o value /dev/disk/by-id/google-local-ssd-0` /mnt/disks/md0 ext4 discard,defaults,nofail 0 2 | sudo tee -a /etc/fstab
 }
 
 get_data() {
