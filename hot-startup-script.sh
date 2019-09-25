@@ -2,8 +2,8 @@
 set -x
 
 update_fstab() {
-    sudo sed -i "s|35|60|g" /etc/fstab
-    sudo mount -t tmpfs -o size=60G tmpfs /opt/kyoto
+    sudo sed -i "s|35|42|g" /etc/fstab
+    sudo mount -t tmpfs -o size=42G tmpfs /opt/kyoto
     sudo mount -o remount tmpfs
 }
 
@@ -63,7 +63,6 @@ sudo sed -i "s|cold.cluster.parition.data.url|# cold.cluster.parition.data.url|g
 main() {
     update_fstab
     update_tar
-    sudo mount -t tmpfs -o size=35G tmpfs /opt/kyoto
     /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
     get_data
     mkdir -p /opt/zapr/prod-active-song-revealer/logs
