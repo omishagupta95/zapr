@@ -1,13 +1,6 @@
 #!/bin/bash
 set -x
 
-mount_disk() {
-    sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
-    sudo mkdir -p /mnt/md0
-    sudo mount -o discard,defaults /dev/sdb /mnt/md0
-    sudo chmod a+w /mnt/md0
-}
-
 get_data() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/matcherreduced-$metadata.kch  /mnt/md0/matcher.kch
@@ -63,8 +56,7 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
-  mount_disk
-#  .//root/script/md0.sh
+  .//root/script/md0.sh
   update_tar
   get_data
   update_nginx
