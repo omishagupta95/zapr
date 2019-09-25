@@ -2,7 +2,7 @@
 set -x
 
 create_template() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v13" --boot-disk-type="pd-ssd" --boot-disk-size="50" --create-disk=mode=rw,size=500,type=pd-ssd,device-name=persistent-disk-$1 --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" $3 --metadata-from-file startup-script="./cold-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v14" --boot-disk-type="pd-ssd" --boot-disk-size="50" --create-disk=mode=rw,size=500,type=pd-ssd,device-name=persistent-disk-$1 --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" $3 --metadata-from-file startup-script="./cold-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
 }
 
 create_instance_group(){
