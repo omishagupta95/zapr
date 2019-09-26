@@ -7,11 +7,35 @@ create_template() {
 }
 
 create_instance_group(){
-        gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+if [ $1 -lt 35 ]
+then
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+elif [ $1 -ge 35 ]
+then  
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
+elif [ $1 -ge 85 ]
+then
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
+elif [$1 -ge 135 ]
+then 
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
+fi
 }
 
 create_backend_service(){
-        gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
+if [ $1 -lt 35 ]
+then
+     gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
+elif [ $1 -ge 35 ]
+then  
+     gcloud compute backend-services create $1 --health-checks=router-hc-1 --port-name=http --protocol=HTTP --global
+elif [ $1 -ge 85 ]
+then
+     gcloud compute backend-services create $1 --health-checks=router-hc-2 --port-name=http --protocol=HTTP --global
+elif [$1 -ge 135 ]
+then 
+     gcloud compute backend-services create $1 --health-checks=router-hc-3 --port-name=http --protocol=HTTP --global
+fi
 }
 
 attach_backend() {
