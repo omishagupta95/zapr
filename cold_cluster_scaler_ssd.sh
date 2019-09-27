@@ -10,13 +10,13 @@ create_instance_group(){
 if [ $3 -lt 35 ]
 then
      gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
-elif [ $3 -ge 35 ] && [ $3 -lt 85]
+elif [ $3 >= 35 ] && [ $3 < 85]
 then  
      gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
-elif [ $3 -ge 85 ] && [ $3 -lt 135]
+elif [ $3 >= 85 ] && [ $3 < 135]
 then
      gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
-elif [$3 -ge 135 ] && [ $3 -lt 185]
+elif [$3 >= 135 ] && [ $3 < 185]
 then 
      gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
 fi
@@ -26,13 +26,13 @@ create_backend_service(){
 if [ $2 -lt 35 ]
 then
      gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
-elif [ $2 -ge 35 ] && [ $3 -lt 85]
+elif [ $2 >= 35 ] && [ $3 < 85]
 then  
      gcloud compute backend-services create $1 --health-checks=router-hc-1 --port-name=http --protocol=HTTP --global
-elif [ $2 -ge 85 ] && [ $3 -lt 135]
+elif [ $2 >= 85 ] && [ $3 < 135]
 then
      gcloud compute backend-services create $1 --health-checks=router-hc-2 --port-name=http --protocol=HTTP --global
-elif [$2 -ge 135 ] && [ $3 -lt 185]
+elif [$2 >= 135 ] && [ $3 < 185]
 then 
      gcloud compute backend-services create $1 --health-checks=router-hc-3 --port-name=http --protocol=HTTP --global
 fi
