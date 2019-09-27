@@ -7,18 +7,18 @@ create_template() {
 }
 
 create_instance_group(){
-if [ $1 -lt 35 ]
+if [ $3 -lt 35 ]
 then
-     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
-elif [ $1 -ge 35 ]
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+elif [ $3 -ge 35 ]
 then  
-     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
-elif [ $1 -ge 85 ]
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
+elif [ $3 -ge 85 ]
 then
-     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
-elif [$1 -ge 135 ]
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
+elif [$3 -ge 135 ]
 then 
-     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
 fi
 }
 
