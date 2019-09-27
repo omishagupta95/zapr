@@ -9,30 +9,30 @@ create_template() {
 create_instance_group(){
 if [ $1 -lt 35 ]
 then
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
 elif [ $1 -ge 35 ]
 then  
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
+     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
 elif [ $1 -ge 85 ]
 then
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
+     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
 elif [$1 -ge 135 ]
 then 
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
+     gcloud compute instance-groups managed create $3 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
 fi
 }
 
 create_backend_service(){
-if [ $1 -lt 35 ]
+if [ $2 -lt 35 ]
 then
      gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
-elif [ $1 -ge 35 ]
+elif [ $2 -ge 35 ]
 then  
      gcloud compute backend-services create $1 --health-checks=router-hc-1 --port-name=http --protocol=HTTP --global
-elif [ $1 -ge 85 ]
+elif [ $2 -ge 85 ]
 then
      gcloud compute backend-services create $1 --health-checks=router-hc-2 --port-name=http --protocol=HTTP --global
-elif [$1 -ge 135 ]
+elif [$2 -ge 135 ]
 then 
      gcloud compute backend-services create $1 --health-checks=router-hc-3 --port-name=http --protocol=HTTP --global
 fi
@@ -57,8 +57,8 @@ create_path_rules() {
 main(){
         for ((i=$1; i<=$2; i++)); do
         create_template cold-temp-$i $i $3
-        create_instance_group cold-group-$i cold-temp-$i
-        create_backend_service cold-backend-$i
+        create_instance_group cold-group-$i cold-temp-$i $i
+        create_backend_service cold-backend-$i $i
         attach_backend cold-backend-$i cold-group-$i
     done
 }
