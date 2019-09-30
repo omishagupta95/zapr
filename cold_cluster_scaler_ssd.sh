@@ -66,4 +66,9 @@ read -p "This script is for scaling of cold instance groups. If you have 3 IGs, 
 read -p "Enter the total number of cold instance groups you want to create, i.e, the end value: " end
 read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}" type
 main $start $end $type
-create_path_rules $end
+if [ $end -lt 50 ]
+then
+   create_path_rules $end
+else 
+   bash ./path_manual.sh
+fi
