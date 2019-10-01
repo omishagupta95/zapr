@@ -64,7 +64,7 @@ copy_data() {
   sudo rm -r /mnt/md0
   sudo mkdir -p /mnt/md0
   sudo mount /dev/md0 /mnt/md0
-  udo chmod a+w /mnt/md0
+  sudo chmod a+w /mnt/md0
   update_tar
   get_data
   update_nginx
