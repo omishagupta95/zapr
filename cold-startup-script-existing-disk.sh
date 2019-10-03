@@ -55,6 +55,8 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 }
 
 copy_data() {
+  sudo mkdir -p /mnt/md1
+  sudo mount /dev/sdb /mnt/md1
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
   #sudo umount /mnt/mdo
   #if [ ! -d "/mnt/md0 ]
@@ -62,8 +64,6 @@ copy_data() {
   #   .//root/script/md0.sh
   update_tar
   #   get_data
-  sudo mkdir -p /mnt/md1
-  sudo mount /dev/sdb /mnt/md1
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
   update_song_revealer_config
