@@ -20,8 +20,8 @@ update_tar() {
        gsutil cp $src_tar_location $temp_tar_download_location
        cd $temp_tar_download_location
        tar -xzvf cold_ubuntu_auto_deploy.tar.gz -C /opt/zapr/
-       sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md0/prefilter.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
-       sudo sed -i "s|/opt/bin/matcher.kch|/mnt/md0/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+       sudo sed -i "s|/opt/bin/prefilter.kch|/mnt/md1/prefilter.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
+       sudo sed -i "s|/opt/bin/matcher.kch|/mnt/md1/matcher.kch|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
        sudo sed -i "s|10.1.1.40|172.16.15.226|g" /opt/zapr/prod-active-song-revealer/config/prod/active/cold/song-revealer-config.j2
 }
 
@@ -62,8 +62,8 @@ copy_data() {
   #   .//root/script/md0.sh
   update_tar
   #   get_data
-  sudo mkdir -p /mnt/md0
-  sudo mount /dev/sdb /mnt/md0
+  sudo mkdir -p /mnt/md1
+  sudo mount /dev/sdb /mnt/md1
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
   update_song_revealer_config
