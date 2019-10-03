@@ -1,16 +1,16 @@
 #!/bin/bash
 set -x
 
-get_data() {
-    metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/matcher.kch  /mnt/md0/matcher.kch
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/prefilter.kch /mnt/md0/prefilter.kch
-}
+#get_data() {
+#    metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
+#    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/matcher.kch  /mnt/md0/matcher.kch
+#    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/prefilter.kch /mnt/md0/prefilter.kch
+#}
 
 update_tar() {
        sudo supervisorctl stop all
        #Clear all the older artifacts
-       rm -rf /mnt/md0/*
+#       rm -rf /mnt/md0/*
        sudo rm -rf /etc/supervisor/conf.d/*
        rm -rf /opt/zapr/prod-active-song-revealer/
        src_tar_location=gs://zapr_bucket/tarballs/cold_ubuntu_auto_deploy.tar.gz
@@ -56,15 +56,14 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 
 copy_data() {
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
-  sudo umount /mnt/mdo
-  if [ ! -d "/mnt/md0 ]
-  then
-     .//root/script/md0.sh
-     update_tar
-     get_data
-  else
-  sudo mount -o discard,defaults /dev/sdb /mnt/md0
-  fi
+  #sudo umount /mnt/mdo
+  #if [ ! -d "/mnt/md0 ]
+  #then
+  #   .//root/script/md0.sh
+  update_tar
+  #   get_data
+  sudo mkdir -p /mnt/md0
+  sudo mount /dev/sdb /mnt/md0
   update_nginx
   mkdir -p /opt/zapr/prod-active-song-revealer/logs
   update_song_revealer_config
