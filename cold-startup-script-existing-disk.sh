@@ -72,3 +72,4 @@ copy_data() {
 }
 
 copy_data
+sudo supervisorctl restart all
