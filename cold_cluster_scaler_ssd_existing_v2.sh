@@ -78,6 +78,7 @@ attach_backend() {
   then
     gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-zone=asia-south1-c --global
     gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1 --zone=asia-south1-c
+  fi
 }
 
 create_path_rules() {
