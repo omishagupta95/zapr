@@ -66,9 +66,18 @@ fi
 }
 
 attach_backend() {
-        gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-region=asia-south1 --global
-        gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1
-
+  if [[ $3 -eq 2 ]] || [[ $3 -eq 4 ]] || [[ $3 -eq 5 ]] || [[ $3 -eq 7 ]] || [[ $3 -eq 8 ]] || [[ $3 -eq 9 ]] || [[ $3 -eq 11 ]] || [[ $3 -eq 15 ]] || [[ $3 -eq 12 ]] || [[ $3 -eq 24 ]] || [[ $3 -eq 29 ]] || [[ $3 -eq 30 ]] || [[ $3 -eq 39 ]] || [[ $3 -eq 40 ]] || [[ $3 -eq 41 ]] || [[ $3 -eq 43 ]] || [[ $3 -eq 44 ]] || [[ $3 -eq 51 ]] || [[ $3 -eq 52 ]] || [[ $3 -eq 53 ]] || [[ $3 -eq 56 ]] || [[ $3 -eq 63 ]] || [[ $3 -eq 65 ]] || [[ $3 -eq 66 ]] || [[ $3 -eq 67 ]] || [[ $3 -eq 69 ]] || [[ $3 -eq 72 ]] || [[ $3 -eq 75 ]] || [[ $3 -eq 78 ]] || [[ $3 -eq 80 ]] || [[ $3 -eq 81 ]] || [[ $3 -eq 82 ]] || [[ $3 -eq 86 ]] || [[ $3 -eq 89 ]] || [[ $3 -eq 94 ]] || [[ $3 -eq 96 ]] || [[ $3 -eq 102 ]] 
+  then
+    gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-zone=asia-south1-a --global
+    gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1 --zone=asia-south1-a
+  elif [[ $3 -eq 1 ]] || [[ $3 -eq 13 ]] || [[ $3 -eq 14 ]] || [[ $3 -eq 17 ]] || [[ $3 -eq 18 ]] || [[ $3 -eq 19 ]] || [[ $3 -eq 20 ]] || [[ $3 -eq 23 ]] || [[ $3 -eq 25 ]] || [[ $3 -eq 26 ]] || [[ $3 -eq 27 ]] || [[ $3 -eq 3 ]] || [[ $3 -eq 32 ]] || [[ $3 -eq 33 ]] || [[ $3 -eq 34 ]] || [[ $3 -eq 35 ]] || [[ $3 -eq 36 ]] || [[ $3 -eq 37 ]] || [[ $3 -eq 38 ]] || [[ $3 -eq 45 ]] || [[ $3 -eq 47 ]] || [[ $3 -eq 48 ]] || [[ $3 -eq 54 ]] || [[ $3 -eq 55 ]] || [[ $3 -eq 62 ]] || [[ $3 -eq 64 ]] || [[ $3 -eq 68 ]] || [[ $3 -eq 73 ]] || [[ $3 -eq 74 ]] || [[ $3 -eq 83 ]] || [[ $3 -eq 88 ]] || [[ $3 -eq 90 ]] || [[ $3 -eq 92 ]] || [[ $3 -eq 93 ]] || [[ $3 -eq 97 ]] || [[ $3 -eq 99 ]] || [[ $3 -eq 101 ]] 
+  then
+    gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-zone=asia-south1-b --global
+    gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1 --zone=asia-south1-b
+  elif [[ $3 -eq 6 ]] || [[ $3 -eq 10 ]] || [[ $3 -eq 12 ]] || [[ $3 -eq 16 ]] || [[ $3 -eq 21 ]] || [[ $3 -eq 28 ]] || [[ $3 -eq 31 ]] || [[ $3 -eq 42 ]] || [[ $3 -eq 46 ]] || [[ $3 -eq 49 ]] || [[ $3 -eq 50 ]] || [[ $3 -eq 57 ]] || [[ $3 -eq 58 ]] || [[ $3 -eq 59 ]] || [[ $3 -eq 60 ]] || [[ $3 -eq 61 ]] || [[ $3 -eq 70 ]] || [[ $3 -eq 71 ]] || [[ $3 -eq 76 ]] || [[ $3 -eq 77 ]] || [[ $3 -eq 79 ]] || [[ $3 -eq 84 ]] || [[ $3 -eq 85 ]] || [[ $3 -eq 87 ]] || [[ $3 -eq 91 ]] || [[ $3 -eq 95 ]] || [[ $3 -eq 98 ]] || [[ $3 -eq 100 ]] || [[ $3 -eq 103 ]] 
+  then
+    gcloud compute backend-services add-backend $1 --instance-group=$2 --instance-group-zone=asia-south1-c --global
+    gcloud compute instance-groups managed set-named-ports $2 --named-ports "http:80" --region=asia-south1 --zone=asia-south1-c
 }
 
 create_path_rules() {
@@ -86,7 +95,7 @@ main(){
         create_template cold-temp-$i $i $3
         create_instance_group cold-group-$i cold-temp-$i $i
         create_backend_service cold-backend-$i $i
-        attach_backend cold-backend-$i cold-group-$i
+        attach_backend cold-backend-$i cold-group-$i $i
     done
 }
 read -p "This script is for scaling of cold instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
