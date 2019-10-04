@@ -22,5 +22,4 @@ aned-path-matcher
     u+=/coldcluster/$i/*=cold-backend-$i,
   done
   u=${u%?}; // To remove the last comma
-  gcloud compute url-maps add-path-matcher cold-http-lb-3 --default-service cold-backend-101 --path-matcher-name path-matcher-1 --path-rules $u --new-hosts "*" --delete-orp
-haned-path-matcher
+  gcloud compute url-maps add-path-matcher cold-http-lb-3 --default-service cold-backend-101 --path-matcher-name path-matcher-1 --path-rules $u --new-hosts "*" --delete-orphaned-path-matcher
