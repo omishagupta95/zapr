@@ -8,7 +8,7 @@ cold-startup-script-existing-disk.sh -> This is the startup script that cold_clu
 
 path_manual.sh -> This is the script which sets the path rules for 103 cold cluster VMs. (It is static fixed to create the                       rules for 103 clusters.
 
-cold_destroyer.sh -> This script tears down the cold setup (scales down cold cluster VMs from x to 0).
+cold_destroyer_v2.sh -> This script tears down the cold setup (scales down cold cluster VMs from x to 0).
 
 router-config-properties-script.sh -> This is the sript uses that creates the url addresses that can be copy pasted into the                                         router config file.
 
