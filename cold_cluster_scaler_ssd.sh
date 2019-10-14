@@ -6,19 +6,19 @@ create_template() {
 #        --disk=name=cold-disk-$i  use this instead of create-disk flag once all disks have been created
 }
 
-create_instance_group(){
+create_instance_group() {
 if [ $3 -lt 35 ]
-then
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+  then
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --zone=$4 --health-check=router-hc --initial-delay 2700
 elif [[ $3 -ge 35 ]] && [[ $3 -lt 85 ]]
-then  
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-1 --initial-delay 2700
+  then  
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --zone=$4 --health-check=router-hc-1 --initial-delay 2700
 elif [[ $3 -ge 85 ]] && [[ $3 -lt 135 ]]
-then
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-2 --initial-delay 2700
+  then
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --zone=$4 --health-check=router-hc-2 --initial-delay 2700
 elif [[$3 -ge 135 ] && [ $3 -lt 185 ]]
-then 
-     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --region=asia-south1 --health-check=router-hc-3 --initial-delay 2700
+  then 
+     gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=cold-instance --zone=$4 --health-check=router-hc-3 --initial-delay 2700
 fi
 }
 
@@ -57,6 +57,16 @@ create_path_rules() {
 main(){
         for ((i=$1; i<=$2; i++)); do
         create_template cold-temp-$i $i $3
+        if (( $i % 3 == 1 ))
+          then
+            create_instance_group cold-group-$i cold-temp-$i $i asia-south1-a
+        elif (( $i % 3 == 2 ))
+          then
+            create_instance_group cold-group-$i cold-temp-$i $i asia-south1-b
+        else (( $i % 3 == 0 ))
+          then
+            create_instance_group cold-group-$i cold-temp-$i $i asia-south1-c
+        fi
         create_instance_group cold-group-$i cold-temp-$i $i
         create_backend_service cold-backend-$i $i
         attach_backend cold-backend-$i cold-group-$i
@@ -72,3 +82,5 @@ then
 else 
    bash ./path_manual.sh
 fi
+
+
