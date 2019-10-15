@@ -27,11 +27,12 @@ create_path_rules() {
 
 main(){
         create_path_rules 
-        for ((i=103; i>=0; i--)); do
+        for ((i=$1; i>=1; i--)); do
         delete_backend_service cold-backend-$i
         delete_instance_group cold-group-$i
         delete_template cold-temp-$i
         done
 }
 
-main 
+read -p "No of clusters you want to delete: " count
+main $count

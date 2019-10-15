@@ -17,3 +17,9 @@ hot_cluster_scaler.sh -> This is the script for provisioning and scaling of hot 
 hot-startup-script.sh -> This is the startup script that the hot_cluster_scaler.sh uses.
 
 hot_cluster_deleter.sh -> This is the script for scaling down hot cluster VMs.
+
+--------------------------------- C O M M A N D S -------------------------------------
+
+1.  To check the size of the file downloaded in instance in human readable (-h) form, along with the last moification time (--time), use this command:
+	`du -h --time <file name>`
+

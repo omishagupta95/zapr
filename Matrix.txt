@@ -1,0 +1,15 @@
+Matrix
+---------- cold cluster ------------
+
+1. Created new instance and new disk: 
+	- 12:14 PM instance creattion time
+	- 1:07 PM All the files downloaded
+	- Total time taken: 53 mins
+2. Created new instance and attached existing disk
+	- Script executed: 1:42 PM (Not able to fetch time in seconds)
+	- Instance creation time: 1:43:10 PM
+	- Total time taken: ~ 1 min
+
+---------- Hot cluster -------------
+
+1. 
