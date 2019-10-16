@@ -2,15 +2,15 @@
 set -x
 
 create_template() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="75" --custom-extensions --image="hot-cluster-instance-image-v6" --boot-disk-type="pd-ssd" --boot-disk-size="30" --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" $3 --metadata-from-file startup-script="./hot-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="75" --custom-extensions --image="hot-cluster-instance-image-v6" --boot-disk-type="pd-ssd" --boot-disk-size="30" --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" --preemptible --metadata-from-file startup-script="./hot-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
 }
 
 create_instance_group(){
-        gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=hot-instance --region=asia-south1 --health-check=router-hc --initial-delay 2700
+        gcloud compute instance-groups managed create $1 --size=1 --template=$2 --base-instance-name=hot-instance --region=asia-south1 --health-check=hot-healthcheck-1 --initial-delay 2700
 }
 
 create_backend_service(){
-        gcloud compute backend-services create $1 --health-checks=router-hc --port-name=http --protocol=HTTP --global
+        gcloud compute backend-services create $1 --health-checks=hot-healthcheck-1 --port-name=http --protocol=HTTP --global
 }
 
 attach_backend() {
@@ -31,7 +31,7 @@ create_path_rules() {
 
 main(){
         for ((i=$1; i<=$2; i++)); do
-        create_template hot-temp-$i $i $3
+        create_template hot-temp-$i $i
         create_instance_group hot-group-$i hot-temp-$i
         create_backend_service hot-backend-$i
         attach_backend hot-backend-$i hot-group-$i
@@ -39,7 +39,7 @@ main(){
 }
 read -p "This script is for scaling of hot instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
 read -p "Enter the total number of hot instance groups you want to create, i.e, the end value: " end
-read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}" type
-main $start $end $type
+# read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}" type
+main $start $end
 create_path_rules $end
 
