@@ -87,7 +87,7 @@ main() {
     execute $i &
     if [ $i == $2 ]
     then
-      exit
+      break
     else
       continue
     fi
