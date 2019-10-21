@@ -84,7 +84,17 @@ execute(){
 
 main() {
   for ((i=$1; i<=$2; i++)); do 
+<<<<<<< HEAD
     execute $i $type &
+=======
+    execute $i &
+    if [ $i == $2 ]
+    then
+      break
+    else
+      continue
+    fi
+>>>>>>> 0d623e4a7ba1e9fb78e02f1f3894b30f4d0b7b79
   done
 exit
 }
