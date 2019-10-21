@@ -5,12 +5,12 @@ set -x
 # THIS SCRIPT DOESN'T INTENDS TO CREATE LOAD BALANCER, IT ASSUMES THAT LOAD BALANCER WITH THE SIMILAR NAME ALREADY EXISTS
 
 create_template_existing_disk() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --disk=name=cold-disk-00$i --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" --preemptible --metadata-from-file startup-script="./cold-startup-script-existing-disk.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --disk=name=cold-disk-00$i --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" $3 --metadata-from-file startup-script="./cold-startup-script-existing-disk.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
 #        --disk=name=cold-disk-$i  use this instead of create-disk flag once all disks have been created
 }
 
 create_template_new_disk() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --create-disk=mode=rw,size=500,type=pd-ssd,name=cold-disk-00$i,device-name=persistent-disk-00$1 --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" --preemptible --metadata-from-file startup-script="./cold-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --create-disk=mode=rw,size=500,type=pd-ssd,name=cold-disk-00$i,device-name=persistent-disk-00$1 --network="zapr-vpc-network" --subnet="private-1" --tags="allow-ssh" $3 --metadata-from-file startup-script="./cold-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
 #        --disk=name=cold-disk-$i  use this instead of create-disk flag once all disks have been created
 }
 
@@ -60,10 +60,10 @@ execute(){
       if [ "$option" == "true" ] || [ "$option" == "True" ]
       then
         echo "Caution: This creates new PD-SSD of size 500 gb"
-        create_template_new_disk cold-temp-$1 $1
+        create_template_new_disk cold-temp-$1 $1 $2
       else
         echo "Caution: This attaches existing PD-SSD of size 500 gb"
-        create_template_existing_disk cold-temp-$1 $1
+        create_template_existing_disk cold-temp-$1 $1 $2
       fi
       if (( $1 % 3 == 1 ))
       then
@@ -84,19 +84,14 @@ execute(){
 
 main() {
   for ((i=$1; i<=$2; i++)); do 
-    execute $i &
-    if [ $i == $2 ]
-    then
-      exit
-    else
-      continue
-    fi
+    execute $i $type &
   done
+exit
 }
 
 read -p "This script is for scaling of cold instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
 read -p "Enter the total number of cold instance groups you want to create, i.e, the end value: " end
-# read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}: " type
+read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}: " type
 read -p "Are the disks new? (True/False): " option
 main $start $end
 if [ $end -lt 50 ]

@@ -29,13 +29,18 @@ create_path_rules() {
   gcloud compute url-maps add-path-matcher hot-http-lb --default-service hot-backend-1 --path-matcher-name path-matcher-1 --path-rules $s --new-hosts "*" --delete-orphaned-path-matcher
 }
 
-main(){
-        for ((i=$1; i<=$2; i++)); do
-        create_template hot-temp-$i $i
-        create_instance_group hot-group-$i hot-temp-$i
-        create_backend_service hot-backend-$i
-        attach_backend hot-backend-$i hot-group-$i
+execute(){
+        create_template hot-temp-$1 $1
+        create_instance_group hot-group-$1 hot-temp-$1
+        create_backend_service hot-backend-$1
+        attach_backend hot-backend-$1 hot-group-$1
     done
+}
+
+main() {
+  for ((i=$1; i<=$2; i++)); do
+    execute $i &
+  done
 }
 read -p "This script is for scaling of hot instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
 read -p "Enter the total number of hot instance groups you want to create, i.e, the end value: " end

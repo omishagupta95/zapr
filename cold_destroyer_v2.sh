@@ -37,13 +37,18 @@ create_path_rules() {
   gcloud compute url-maps add-path-matcher cold-http-lb-3 --default-service test-backend --path-matcher-name path-matcher-1 --path-rules $s --new-hosts "*" --delete-orphaned-path-matcher
 }
 
-main(){
-        create_path_rules 
-        for ((i=$1; i>=0; i--)); do
-        delete_backend_service cold-backend-$i
-        delete_instance_group cold-group-$i $i
-        delete_template cold-temp-$i
-        done
+execute(){
+  delete_backend_service cold-backend-$1
+  delete_instance_group cold-group-$1 $1
+  delete_template cold-temp-$1
+}
+
+main() {
+  create_path_rules
+    for ((i=$1; i>=1; i--)); do
+      execute $i &
+    done
+    exit
 }
 
 read -p "No of clusters you want to delete: " count
