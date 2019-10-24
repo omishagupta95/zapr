@@ -7,8 +7,9 @@ set -x
 #    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/prefilter.kch /mnt/md0/prefilter.kch
 #}
 warmup(){
-      gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py ~
-      gsutil cp gs://zapr_bucket/warmup/http.log ~ 
+      sudo gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py /home/warmup/fingerprint_in_httplog.py
+      sudo gsutil cp gs://zapr_bucket/warmup/http.log /home/warmup/http.log
+      cd /home/warmup
       python3 fingerprint_in_httplog.py http.log
 }
 

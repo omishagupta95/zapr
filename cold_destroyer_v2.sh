@@ -45,12 +45,12 @@ execute(){
 
 main() {
   create_path_rules
-    for ((i=$1; i>=1; i--)); do
+    for ((i=$1; i>=$2; i--)); do
       execute $i &
     done
     exit
 }
 
-read -p "No of clusters you want to delete: " count
-main $count
-main 
+read -p "upper limit: " count
+read -p "lower limit: " limit
+main $count $limit 
