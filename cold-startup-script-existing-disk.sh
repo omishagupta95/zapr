@@ -6,6 +6,11 @@ set -x
 #    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/matcher.kch  /mnt/md0/matcher.kch
 #    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/prefilter.kch /mnt/md0/prefilter.kch
 #}
+warmup(){
+      gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py ~
+      gsutil cp gs://zapr_bucket/warmup/http.log ~ 
+      python3 fingerprint_in_httplog.py http.log
+}
 
 update_tar() {
        sudo supervisorctl stop all
@@ -55,8 +60,8 @@ sudo sed -i "58s|.*|#mongo creds \nmongoHostnames=172.16.15.236\nisEC2=false\nre
 }
 
 copy_data() {
-  sudo mkdir -p /mnt/md1
-  sudo mount /dev/sdb /mnt/md1
+  sudo mkdir -p /mnt/md0
+  sudo mount /dev/sdb /mnt/md0
   /opt/zapr/prod-active-song-revealer/scripts/kyotoFix.sh
   #sudo umount /mnt/mdo
   #if [ ! -d "/mnt/md0 ]
@@ -72,4 +77,5 @@ copy_data() {
 }
 
 copy_data
+warmup
 sudo supervisorctl restart all

@@ -7,6 +7,12 @@ get_data() {
     gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/cold-cluster/cluster$metadata/prefilter.kch /mnt/md0/prefilter.kch
 }
 
+warmup(){
+      gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py ~
+      gsutil cp gs://zapr_bucket/warmup/http.log ~ 
+      python3 fingerprint_in_httplog.py http.log
+}
+
 update_tar() {
        sudo supervisorctl stop all
        #Clear all the older artifacts
@@ -68,4 +74,5 @@ copy_data() {
   sudo ansible-playbook /opt/zapr/prod-active-song-revealer/deploy/prod/active/cold/song-revealer.yml | tee /opt/zapr/prod-active-song-revealer/logs/deploy.log
 }
 
-copy_data
+copy_data &
+warmup &
