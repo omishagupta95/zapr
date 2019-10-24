@@ -8,10 +8,10 @@ get_data() {
 }
 
 warmup(){
-      gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py /home/warmup/http.log
-      gsutil cp gs://zapr_bucket/warmup/http.log /home/warmup/http.log
-      cd /home/warmup/http.log
-      python3 fingerprint_in_httplog.py http.log
+      sudo gsutil cp gs://zapr_bucket/warmup/fingerprint_in_httplog.py /home/warmup/fingerprint_in_httplog.py
+      sudo gsutil cp gs://zapr_bucket/warmup/http.log /home/warmup/http.log
+      cd /home/warmup/
+      sudo python3 fingerprint_in_httplog.py http.log
 }
 
 update_tar() {
