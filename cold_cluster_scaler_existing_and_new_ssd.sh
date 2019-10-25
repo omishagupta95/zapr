@@ -86,7 +86,6 @@ main() {
   for ((i=$1; i<=$2; i++)); do 
     execute $i $type &
   done
-exit
 }
 
 read -p "This script is for scaling of cold instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
@@ -94,6 +93,7 @@ read -p "Enter the total number of cold instance groups you want to create, i.e,
 read -p "Choose preemptible(--preemptible) or non-preemptible(press spacebar and enter){case sensitive}: " type
 read -p "Are the disks new? (True/False): " option
 main $start $end
+sleep 250s
 if [ $end -lt 50 ]
 then
    create_path_rules $end

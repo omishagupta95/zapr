@@ -46,6 +46,7 @@ main(){
         continue
        fi
       done
+      sleep 250s
 }
 
 read -p "This script is for scaling of hot instance groups. If you have 3 IGs, and you want to scale up to 10. Set start value as 4, and end value as 10. Please enter the start value: " start
