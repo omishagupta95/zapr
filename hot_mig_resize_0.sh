@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-# THIS SCRIPT IS FOR RESIZING HOT MIGs TO 1 INSTANCE PER GROUP
+# THIS SCRIPT IS FOR RESIZING HOT MIGs TO 0 INSTANCE PER GROUP
 
 resize_mig() {
     gcloud compute instance-groups managed resize $1 --size=0 --zone=$2 
