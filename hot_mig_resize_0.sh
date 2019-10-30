@@ -4,7 +4,7 @@ set -x
 # THIS SCRIPT IS FOR RESIZING HOT MIGs TO 0 INSTANCE PER GROUP
 
 resize_mig() {
-    gcloud compute instance-groups managed resize $1 --size=0 --zone=$2 
+    gcloud compute instance-groups managed resize $1 --size=0 --region asia-south1 
 }
 
 
