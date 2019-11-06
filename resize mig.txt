@@ -1,0 +1,43 @@
+"""
+BEFORE RUNNING:
+---------------
+1. If not already done, enable the Compute Engine API
+   and check the quota for your project at
+   https://console.developers.google.com/apis/api/compute
+2. This sample uses Application Default Credentials for authentication.
+   If not already done, install the gcloud CLI from
+   https://cloud.google.com/sdk and run
+   `gcloud beta auth application-default login`.
+   For more information, see
+   https://developers.google.com/identity/protocols/application-default-credentials
+3. Install the Python client library for Google APIs by running
+   `pip install --upgrade google-api-python-client`
+"""
+from pprint import pprint
+
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
+
+credentials = GoogleCredentials.get_application_default()
+
+service = discovery.build('compute', 'v1', credentials=credentials)
+
+# Project ID for this request.
+project = 'my-project'  # TODO: Update placeholder value.
+
+# The name of the zone where the managed instance group is located.
+zone = 'my-zone'  # TODO: Update placeholder value.
+
+# The name of the managed instance group.
+instance_group_manager = 'my-instance-group-manager'  # TODO: Update placeholder value.
+
+# The number of running instances that the managed instance group should maintain at any given time.
+# The group automatically adds or removes instances to maintain the number of instances specified by
+# this parameter.
+size = 0  # TODO: Update placeholder value.
+
+request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size)
+response = request.execute()
+
+# TODO: Change code below to process the `response` dict:
+pprint(response)
