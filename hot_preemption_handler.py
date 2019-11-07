@@ -3,17 +3,17 @@ from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 
 credentials = GoogleCredentials.get_application_default()
+credentials= credentials.create_scoped('https://www.googleapis.com/auth/cloud-platform')
 service = discovery.build('compute', 'v1', credentials=credentials)
 
 # Project ID for this request.
 project = 'viewership-lift-and-shift-poc'  # TODO: Update placeholder value.
 
 # The name of the zone where the managed instance group is located.
-
+region = 'asia-south1'
 for i in range(1,11,1):
-  region = asia-south1
   instance_group_manager = 'hot-group-' + str(i)
-  request = service.instanceGroupManagers().listManagedInstances(project=project, region=region, instanceGroupManager=instance_group_manager)
+  request = service.regionInstanceGroupManagers().listManagedInstances(project=project, region=region, instanceGroupManager=instance_group_manager)
   response = request.execute()
   instances = response["managedInstances"]
   status=instances[0]["instanceStatus"]
@@ -27,13 +27,13 @@ for i in range(1,11,1):
     size1 = 2
     size2 = 1
     print("resizing" + instance_group_manager + " to 2")
-    request = service.instanceGroupManagers().resize(project=project, region=region, instanceGroupManager=instance_group_manager, size=size1)
+    request = service.regionInstanceGroupManagers().resize(project=project, region=region, instanceGroupManager=instance_group_manager, size=size1)
     response = request.execute()
     print("deleting old VM in MIG")
     request = service.instances().delete(project=project, zone=instance_zone, instance=instance_name)
     response = request.execute()
     print("resizing" + instance_group_manager + "back to 1")
-    request = service.instanceGroupManagers().resize(project=project, region=region, instanceGroupManager=instance_group_manager, size=size2)
+    request = service.regionInstanceGroupManagers().resize(project=project, region=region, instanceGroupManager=instance_group_manager, size=size2)
     response = request.execute()
 
   else:
