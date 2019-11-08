@@ -1,7 +1,8 @@
 from pprint import pprint
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
-from datetime import datetime
+from datetime import timedelta, datetime
+import math
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('compute', 'v1', credentials=credentials)
@@ -33,9 +34,38 @@ for i in range(1,103,1):
   
   request = service.instances().get(project=project, zone=zone, instance=instance_full_name)
   response = request.execute()
+  # get VM creation time
   creation_time = response["creationTimestamp"]
+  creation_timestamp = datetime.timestamp(creation_time)
+  creation_timestamp = math.floor(creation_timestamp))
+  # get current date and time
   now = datetime.now()
-  current_time = now.strftime("%H:%M:%S")
+  current_timestamp = datetime.timestamp(now)
+  current_timestamp = math.floor(current_timestamp))
+  time_diff = current_timestamp - creation_timestamp
+  print(time_diff)
+  
+  
+  """
+  datetimeFormat = '%Y-%m-%d %H:%M:%S.%f'
+  now = datetime.now()
+  d = now.strftime("%d")
+  m = now.strftime("%m")
+  y = now.strftime("%Y")
+  m1 = now.strftime("%M")
+  h = now.strftime("%H")
+  s = now.strftime("%S")
+  current_time = y + "-" + m + "-" + d + " "+ h + ":" + m1 + ":" + s+ "." + "000"
+  diff = datetime.strptime(current_time, datetimeFormat) - datetime.strptime(creation_time, datetimeFormat)
+  print("Difference:", diff)
+  print("Days:", diff.days)
+  #print("Microseconds:", diff.Microseconds)
+  print("Seconds:", diff.seconds)
+  """
+  
+
+  
+  
   
   if (status != "RUNNING"):
     size1 = 2
