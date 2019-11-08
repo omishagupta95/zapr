@@ -1,6 +1,7 @@
 from pprint import pprint
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
+from datetime import datetime
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('compute', 'v1', credentials=credentials)
@@ -29,6 +30,13 @@ for i in range(1,103,1):
   lis = instance_full_name.split("/")
   instance_name=lis[-1] 
   pprint(instance_group_manager + ":" + status)
+  
+  request = service.instances().get(project=project, zone=zone, instance=instance_full_name)
+  response = request.execute()
+  creation_time = response["creationTimestamp"]
+  now = datetime.now()
+  current_time = now.strftime("%H:%M:%S")
+  
   if (status != "RUNNING"):
     size1 = 2
     size2 = 1
