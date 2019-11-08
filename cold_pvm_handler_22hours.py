@@ -47,6 +47,7 @@ for i in range(1,103,1):
   
   
   """
+  THIS IS THE WORKIN SCRIPT
   datetimeFormat = '%Y-%m-%d %H:%M:%S.%f'
   now = datetime.now()
   d = now.strftime("%d")
@@ -86,12 +87,53 @@ for i in range(1,103,1):
 #zone = 'asia-south1-a'  # TODO: Update placeholder value.
 
 """
-# The name of the managed instance group.
-instance_group_manager = 'cold-group-1'  # TODO: Update placeholder value.
-request = service.instanceGroupManagers().listManagedInstances(project=project, zone=zone, instanceGroupManager=instance_group_manager)
+from pprint import pprint
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
+import datetime
+from datetime import timedelta, datetime
+import math
+from pytz import timezone
+import pytz
+import os, time
+import math
+
+os.environ['TZ'] = 'US/Pacific'
+
+credentials = GoogleCredentials.get_application_default()
+service = discovery.build('compute', 'v1', credentials=credentials)
+
+
+# Project ID for this request.
+project = 'viewership-lift-and-shift-poc'  # TODO: Update placeholder value.
+zone = 'asia-south1-a'
+instance_full_name = 'cold-instance-48h6'
+
+
+request = service.instances().get(project=project, zone=zone, instance=instance_full_name)
 response = request.execute()
-# TODO: Change code below to process the `response` dict:
-instances = response["managedInstances"]
-status=instances[0]["instanceStatus"]
-pprint(status)
+
+now3 = datetime.now(pytz.timezone('US/Pacific'))
+#print("Current time now in IST="+str(a))
+print("Current time in PST="+str(now3))
+datetimeFormat = '%Y-%m-%dT%H:%M:%S.%f-08:00'
+
+d = now3.strftime("%d")
+m = now3.strftime("%m")
+y = now3.strftime("%Y")
+m1 = now3.strftime("%M")
+h = now3.strftime("%H")
+s = now3.strftime("%S")
+
+date2 = y + "-" + m + "-" + d + "T"+ h + ":" + m1 + ":" + s+ "." + "000"+ "-08:00"
+print("Date_Time in PST string format =" + date2)
+
+creation_time = response["creationTimestamp"]
+print("Creation timestamp of VM="+ creation_time)
+
+diff = datetime.strptime(date2, datetimeFormat)\
+  - datetime.strptime(creation_time, datetimeFormat)
+  
+print("Diff in sec=", diff.seconds)
+
 """
