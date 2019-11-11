@@ -4,6 +4,7 @@ from oauth2client.client import GoogleCredentials
 from datetime import timedelta, datetime
 import math
 import pytz
+import requests
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('compute', 'v1', credentials=credentials)
@@ -54,10 +55,18 @@ for i in range(1,103,1):
   
   # get difference in time
   diff = datetime.strptime(current_time, datetimeFormat) - datetime.strptime(creation_time, datetimeFormat)
-  print("Difference:", diff)
-  print("Days:", diff.days)
+  #print("Difference:", diff)
+  #print("Days:", diff.days)
   #print("Microseconds:", diff.Microseconds)
   print("Creation time vs Current time difference in seconds:", diff.seconds)
+  
+  # get instance IP
+  
+  ip = response["networkInterfaces"][0]["networkIP"]
+  url = 'curl ' + ip + ':8082' 
+  r = requests.get(url)
+  r.json() # curl result healthcheck
+  print(r)
   
 """ 
   if (status != "RUNNING"):
