@@ -3,6 +3,7 @@ from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 from datetime import timedelta, datetime
 import math
+import pytz
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('compute', 'v1', credentials=credentials)
@@ -34,40 +35,31 @@ for i in range(1,103,1):
   
   request = service.instances().get(project=project, zone=zone, instance=instance_full_name)
   response = request.execute()
+  
   # get VM creation time
   creation_time = response["creationTimestamp"]
-  creation_timestamp = datetime.timestamp(creation_time)
-  creation_timestamp = math.floor(creation_timestamp))
+  #creation_timestamp = datetime.timestamp(creation_time)
+  #creation_timestamp = math.floor(creation_timestamp)
+  
   # get current date and time
-  now = datetime.now()
-  current_timestamp = datetime.timestamp(now)
-  current_timestamp = math.floor(current_timestamp))
-  time_diff = current_timestamp - creation_timestamp
-  print(time_diff)
-  
-  
-  """
-  THIS IS THE WORKIN SCRIPT
-  datetimeFormat = '%Y-%m-%d %H:%M:%S.%f'
-  now = datetime.now()
+  datetimeFormat = '%Y-%m-%dT%H:%M:%S.%f-08:00'
+  now = datetime.now(pytz.timezone('US/Pacific'))
   d = now.strftime("%d")
   m = now.strftime("%m")
   y = now.strftime("%Y")
   m1 = now.strftime("%M")
   h = now.strftime("%H")
   s = now.strftime("%S")
-  current_time = y + "-" + m + "-" + d + " "+ h + ":" + m1 + ":" + s+ "." + "000"
+  current_time = y + "-" + m + "-" + d + "T"+ h + ":" + m1 + ":" + s+ "." + "000"+ "-08:00"
+  
+  # get difference in time
   diff = datetime.strptime(current_time, datetimeFormat) - datetime.strptime(creation_time, datetimeFormat)
   print("Difference:", diff)
   print("Days:", diff.days)
   #print("Microseconds:", diff.Microseconds)
-  print("Seconds:", diff.seconds)
-  """
+  print("Creation time vs Current time difference in seconds:", diff.seconds)
   
-
-  
-  
-  
+""" 
   if (status != "RUNNING"):
     size1 = 2
     size2 = 1
@@ -83,57 +75,7 @@ for i in range(1,103,1):
 
   else:
     print("It's working fine")
+    
+"""
 
 #zone = 'asia-south1-a'  # TODO: Update placeholder value.
-
-"""
-from pprint import pprint
-from googleapiclient import discovery
-from oauth2client.client import GoogleCredentials
-import datetime
-from datetime import timedelta, datetime
-import math
-from pytz import timezone
-import pytz
-import os, time
-import math
-
-os.environ['TZ'] = 'US/Pacific'
-
-credentials = GoogleCredentials.get_application_default()
-service = discovery.build('compute', 'v1', credentials=credentials)
-
-
-# Project ID for this request.
-project = 'viewership-lift-and-shift-poc'  # TODO: Update placeholder value.
-zone = 'asia-south1-a'
-instance_full_name = 'cold-instance-48h6'
-
-
-request = service.instances().get(project=project, zone=zone, instance=instance_full_name)
-response = request.execute()
-
-now3 = datetime.now(pytz.timezone('US/Pacific'))
-#print("Current time now in IST="+str(a))
-print("Current time in PST="+str(now3))
-datetimeFormat = '%Y-%m-%dT%H:%M:%S.%f-08:00'
-
-d = now3.strftime("%d")
-m = now3.strftime("%m")
-y = now3.strftime("%Y")
-m1 = now3.strftime("%M")
-h = now3.strftime("%H")
-s = now3.strftime("%S")
-
-date2 = y + "-" + m + "-" + d + "T"+ h + ":" + m1 + ":" + s+ "." + "000"+ "-08:00"
-print("Date_Time in PST string format =" + date2)
-
-creation_time = response["creationTimestamp"]
-print("Creation timestamp of VM="+ creation_time)
-
-diff = datetime.strptime(date2, datetimeFormat)\
-  - datetime.strptime(creation_time, datetimeFormat)
-  
-print("Diff in sec=", diff.seconds)
-
-"""
