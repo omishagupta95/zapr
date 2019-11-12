@@ -72,17 +72,17 @@ def test_request(request):
     # get instance IP
     
     ip = response["networkInterfaces"][0]["networkIP"]
-    url = 'http://' + ip + ':8082' 
-    r = requests.get(url)
-    r.json() # curl result healthcheck
-    print(r)
-    r = str(r)
-    if (r == "<Response [603]>"):
-      logger.info(instance_name + " belonging to " + instance_group_manager + " is up/healthy")
+    url = 'http://' + ip + ':8082/health_check' 
+    
+    
+    try:
+      r = requests.get(url)
+      r.json()
+      print(r)
       print(instance_name + " belonging to " + instance_group_manager + " is up/healthy")
-    else:
-      logger.info(instance_name + " belonging to " + instance_group_manager + " is down/unhealthy")
-      print(instance_name + " belonging to " + instance_group_manager + " is down/unhealthy")
+    
+    except requests.exceptions.RequestException:
+       print(instance_name + " belonging to " + instance_group_manager + " is down/unhealthy")
 
 
 
