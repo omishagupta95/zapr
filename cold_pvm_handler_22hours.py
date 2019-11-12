@@ -63,10 +63,13 @@ for i in range(1,103,1):
   # get instance IP
   
   ip = response["networkInterfaces"][0]["networkIP"]
-  url = 'curl ' + ip + ':8082' 
+  url = ip + ':8082' 
   r = requests.get(url)
   r.json() # curl result healthcheck
   print(r)
+  r = str(r)
+  if (r == "<Response [200]>"):
+  print("server is up")
   
 """ 
   if (status != "RUNNING"):
