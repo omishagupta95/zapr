@@ -1,4 +1,3 @@
-from pprint import pprint
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 from datetime import timedelta, datetime
@@ -6,15 +5,19 @@ import math
 import pytz
 import logging
 import requests
+from pprint import pprint
 
-def test_request(request):
+credentials = GoogleCredentials.get_application_default()
+  #credentials= credentials.create_scoped('https://www.googleapis.com/auth/cloud-platform')
+service = discovery.build('compute', 'v1', credentials=credentials)
 
+def test_request():
   logging.basicConfig(level=logging.INFO)
   logger = logging.getLogger(__name__)
   
-  credentials = GoogleCredentials.get_application_default()
+#  credentials = GoogleCredentials.get_application_default()
   #credentials= credentials.create_scoped('https://www.googleapis.com/auth/cloud-platform')
-  service = discovery.build('compute', 'v1', credentials=credentials)
+#  service = discovery.build('compute', 'v1', credentials=credentials)
   
   # Project ID for this request.
   project = 'viewership-lift-and-shift-poc'  # TODO: Update placeholder value.
@@ -23,7 +26,7 @@ def test_request(request):
   
   for i in range(1,103,1):
     if(i%3 == 1):
-    	zone = 'asia-south1-a'
+        zone = 'asia-south1-a'
     elif(i%3 == 2):
       zone = 'asia-south1-b'
     elif(i%3 == 0):
@@ -44,7 +47,6 @@ def test_request(request):
     request = service.instances().get(project=project, zone=zone, instance=instance_name)
     response = request.execute()
    
-    logger.info(response) 
     # get VM creation time
     creation_time = response["creationTimestamp"]
   #  creation_timestamp = datetime.timestamp(creation_time)
@@ -68,41 +70,38 @@ def test_request(request):
     #print("Days:", diff.days)
     #print("Microseconds:", diff.Microseconds)
     print("Creation time vs Current time difference in seconds:", diff.seconds)
-  
-    # get instance IP
-    
-    ip = response["networkInterfaces"][0]["networkIP"]
-    url = 'http://' + ip + ':8082/health_check' 
-    
-    
-    try:
-      r = requests.get(url)
-      r.json()
-      print(r)
-      print(instance_name + " belonging to " + instance_group_manager + " is up/healthy")
-    
-    except requests.exceptions.RequestException:
-       print(instance_name + " belonging to " + instance_group_manager + " is down/unhealthy")
+    vm_age = diff.seconds
 
+    if (vm_age >= 79200):
+       size1 = 2
+       print("resizing" + instance_group_manager + " to 2")
+       request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size1)
+       response = request.execute()
+       check_health(project,zone,instance_group_manager,instance_name)
+    else:
+       continue
+       
 
+def check_health(project,zone,instance_group_manager,instance_name):
 
-""" 
-  if (status != "RUNNING"):
-    size1 = 2
-    size2 = 1
-    print("resizing" + instance_group_manager + " to 2")
-    request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size1)
-    response = request.execute()
-    print("deleting old VM in MIG")
-    request = service.instances().delete(project=project, zone=zone, instance=instance_name)
-    response = request.execute()
-    print("resizing" + instance_group_manager + "back to 1")
-    request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size2)
-    response = request.execute()
+       request = service.instanceGroupManagers().get(project=project, zone=zone, instanceGroupManager=instance_group_manager)
+       response = request.execute()
+       pprint(response["status"]["isStable"])
+       status = response["status"]["isStable"]
+       status = str(status)
+       size2 = 1
 
-  else:
-    print("It's working fine")
+       if (status == "True"):
+         print("New VM is healthy, deleting old VM")
+         request = service.instances().delete(project=project, zone=zone, instance=instance_name)
+         response = request.execute()
+         print("resizing" + instance_group_manager + "back to 1")
+         request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size2)
+         response = request.execute()
+       else:
+         print("New VM is not healthy yet, checking status")
+         check_health(project,zone,instance_group_manager,instance_name)
+     
     
-"""
+test_request()
 
-#zone = 'asia-south1-a'  # TODO: Update placeholder value.
