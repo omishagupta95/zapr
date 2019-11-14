@@ -100,5 +100,6 @@ def check_health(project,zone,instance_group_manager,instance_name):
 
 if __name__ == '__main__':
   i = sys.argv[1]
+  i = int(i)
   test_request(i)
 
