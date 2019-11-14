@@ -8,16 +8,11 @@ import requests
 from pprint import pprint
 
 credentials = GoogleCredentials.get_application_default()
-  #credentials= credentials.create_scoped('https://www.googleapis.com/auth/cloud-platform')
 service = discovery.build('compute', 'v1', credentials=credentials)
 
 def test_request():
   logging.basicConfig(level=logging.INFO)
   logger = logging.getLogger(__name__)
-  
-#  credentials = GoogleCredentials.get_application_default()
-  #credentials= credentials.create_scoped('https://www.googleapis.com/auth/cloud-platform')
-#  service = discovery.build('compute', 'v1', credentials=credentials)
   
   # Project ID for this request.
   project = 'viewership-lift-and-shift-poc'  # TODO: Update placeholder value.
