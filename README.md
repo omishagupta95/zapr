@@ -94,10 +94,20 @@ __get_health.sh:__ checks the health of hot and cold backend services.
 __router-config-properties-script.sh__: This is the sript uses that creates the url addresses that can be copy pasted into the                                         router config file.
 
 
-###### C O M M A N D S 
+## C O M M A N D S 
 
 1.  To check the size of the file downloaded in instance in human readable (-h) form, along with the last moification time (--time), use this command:
 	`du -h --time <file name>`
 	
-###### M E T R I C E S
+## M E T R I C S
 
+###### cold cluster 
+
+1. Created new instance and new disk: 
+	- 12:14 PM instance creattion time
+	- 1:07 PM All the files downloaded
+	- Total time taken: 53 mins
+2. Created new instance and attached existing disk
+	- Script executed: 1:42 PM (Not able to fetch time in seconds)
+	- Instance creation time: 1:43:10 PM
+	- Total time taken: ~ 1 min
