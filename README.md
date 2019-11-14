@@ -2,7 +2,7 @@
 
 ###### This repository contains all the scripts used in infra provisioning for Zapr.
 
-###### Provisioning scripts
+## Provisioning scripts
 
 __cold_cluster_scaler_existing_and_new_ssd.sh__: This is the script for provisioning & scaling up of cold cluster VMs. It takes following inputs.
 
@@ -25,7 +25,7 @@ __hot-startup-script.sh__: This is the startup script that the hot_cluster_scale
 
 __path_manual.sh__: This is the script which sets the path rules for 103 cold cluster VMs. (It is static fixed to create the                       rules for 103 clusters.
 
-###### Deletion Scripts
+## Deletion Scripts
 
 __cold_destroyer.sh__: This script tears down the cold setup (scales down cold cluster VMs from x to 0). 
 
@@ -43,7 +43,7 @@ __hot_cluster_deleter.sh__: This is the script for scaling down hot cluster VMs.
 | start         | eg: 103        | The current number of the instances.	|
 | end           | eg: 1     | The last instance group you want to delete. |
 
-###### Managed instance group (MIG) resizing scripts.
+## Managed instance group (MIG) resizing scripts.
 
 __cold_mig_resize_0.sh:__ 
 
@@ -77,7 +77,7 @@ __hot_mig_resize_1.sh:__
 
 *This assumes the lower limit to be 1, and hence applies changes to all of the MIGs from 1 to **total.***
 
-###### Preemption Handling scripts.
+## Preemption Handling scripts.
 
 __cold_pvm_handler_22hours_parallel.py:__ Python script for resizing cold VMs older than 22 hours
 
@@ -87,7 +87,7 @@ __cold_pvm_handler_22hours_sequential.py *(Deprecated)*:__ Python script for res
 
 __hot_preemption_handler_sequential.py:__ Python script for resizing hot VMs older than 22 hours in sequential order
 
-###### Miscellaneous Scripts
+## Miscellaneous Scripts
 
 __get_health.sh:__ checks the health of hot and cold backend services.
 
