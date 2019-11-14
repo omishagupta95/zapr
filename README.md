@@ -1,6 +1,6 @@
 # zapr
 
-This repository contains all the scripts used in infra provisioning for Zapr.
+###### This repository contains all the scripts used in infra provisioning for Zapr.
 
 __cold_cluster_scaler_ssd_existing_v2.sh__ -> This is the script for provisioning & scaling up of cold cluster VMs when the                                                   underlying SSD disks already exist with the relevant kyoto files
 
