@@ -28,6 +28,22 @@ __cold_destroyer.sh__: This script tears down the cold setup (scales down cold c
 
 *For example: Upper = 103, lower = 2 will scale down to 1 vm.*
 
+__cold_mig_resize_0.sh:__ 
+
+| Inputs        | Example       | Description				|
+| ------------- | ------------- |---------------------------------------|
+| Total         | eg: 103        | 103 MIGs resizes to 0 VMs	|
+
+*This assumes the lower limit to be 1, and hence applies changes to all of the MIGs from 1 to **total***
+
+__cold_mig_resize_1.sh:__ 
+
+| Inputs        | Example       | Description				|
+| ------------- | ------------- |---------------------------------------|
+| Total         | eg: 103        | 103 MIGs resizes to 1 VMs	|
+
+*This assumes the lower limit to be 1, and hence applies changes to all of the MIGs from 1 to **total***
+
 __router-config-properties-script.sh__: This is the sript uses that creates the url addresses that can be copy pasted into the                                         router config file.
 
 __hot_cluster_scaler.sh__: This is the script for provisioning and scaling of hot cluster VMs.
