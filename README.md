@@ -26,7 +26,7 @@ __cold_destroyer.sh__: This script tears down the cold setup (scales down cold c
 | upper         | eg: 103        | The current number of the instances.	|
 | lower           | eg: 1     | The last instance group you want to delete. |
 
-*For example: Upper = 103, lower = 2 will scale down to 1 vm. *
+*For example: Upper = 103, lower = 2 will scale down to 1 vm.*
 
 __router-config-properties-script.sh__: This is the sript uses that creates the url addresses that can be copy pasted into the                                         router config file.
 
