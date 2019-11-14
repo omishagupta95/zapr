@@ -13,11 +13,18 @@ __cold_cluster_scaler_existing_and_new_ssd.sh__: This is the script for provisio
 | option | true/True or false | If the disk are new: True; else false |
 
 
-__cold-startup-script-existing-disk.sh__: This is the startup script that cold_cluster_scaler_ssd_existing_v2.sh uses.
+__cold-startup-script-new-disk.sh__: This is the startup script that cold_cluster_scaler_ssd_existing_v2.sh uses for new disks.
+
+__cold-startup-script-existing-disk.sh__: This is the startup script that cold_cluster_scaler_ssd_existing_v2.sh uses  for existing disks.
 
 __path_manual.sh__: This is the script which sets the path rules for 103 cold cluster VMs. (It is static fixed to create the                       rules for 103 clusters.
 
-__cold_destroyer_v2.sh__: This script tears down the cold setup (scales down cold cluster VMs from x to 0).
+__cold_destroyer.sh__: This script tears down the cold setup (scales down cold cluster VMs from x to 0).
+
+| Inputs        | Example       | Description				|
+| ------------- | ------------- |---------------------------------------|
+| upper         | eg: 103        | The current number of the instances.	|
+| lower           | eg: 1     | The last instance group you want to delete. |
 
 __router-config-properties-script.sh__: This is the sript uses that creates the url addresses that can be copy pasted into the                                         router config file.
 
