@@ -27,14 +27,19 @@ path-matcher
     s=${s%?};
   fi
 }
-main(){
+execute(){
+        delete_backend_service hot-backend-$1
+        delete_instance_group hot-group-$1
+        delete_template hot-temp-$1
+}
+
+main() {
         create_path_rules $2
         for ((i=$1; i>$2; i--)); do
-        delete_backend_service hot-backend-$i
-        delete_instance_group hot-group-$i
-        delete_template hot-temp-$i
+           execute $i &
         done
 }
+
 read -p "This script is for deletion of hot instance groups. If you have 3 IGs, and you want to scale down to 0. Set start value as 3, and end value as 0. Please enter the s
 tart value: " start
 read -p "Enter the total number of hot instance groups you want to scale down to, i.e, the end value: " end
