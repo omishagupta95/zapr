@@ -26,8 +26,7 @@ def test_request(i):
     zone = 'asia-south1-b'
  elif(i%3 == 0):
     zone = 'asia-south1-c'
- else:
-    break
+ 
  instance_group_manager = 'cold-group-' + str(i)
  request = service.instanceGroupManagers().listManagedInstances(project=project, zone=zone, instanceGroupManager=instance_group_manager)
  response = request.execute()
@@ -72,8 +71,7 @@ def test_request(i):
     request = service.instanceGroupManagers().resize(project=project, zone=zone, instanceGroupManager=instance_group_manager, size=size1)
     response = request.execute()
     check_health(project,zone,instance_group_manager,instance_name)
- else:
-    continue
+
        
 
 def check_health(project,zone,instance_group_manager,instance_name):
