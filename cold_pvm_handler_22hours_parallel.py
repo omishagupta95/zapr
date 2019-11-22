@@ -7,6 +7,7 @@ import logging
 import requests
 from pprint import pprint
 import sys
+import time
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('compute', 'v1', credentials=credentials)
@@ -92,6 +93,8 @@ def check_health(project,zone,instance_group_manager,instance_name):
          response = request.execute()
        else:
          print("New VM is not healthy yet, checking status")
+         time.sleep(60)
+         print("Sleeping for 1 minute")
          check_health(project,zone,instance_group_manager,instance_name)
      
 
