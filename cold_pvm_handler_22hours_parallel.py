@@ -93,8 +93,8 @@ def check_health(project,zone,instance_group_manager,instance_name):
          response = request.execute()
        else:
          print("New VM is not healthy yet, checking status")
+         print("Checking again in 1 minute")
          time.sleep(60)
-         print("Sleeping for 1 minute")
          check_health(project,zone,instance_group_manager,instance_name)
      
 
