@@ -9,9 +9,9 @@ update_fstab() {
 
 get_data() {
     metadata=$(curl http://169.254.169.254/0.1/meta-data/attributes/partition)
-    gsutil -m cp -n gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/hotcluster.txt /opt/kyoto/hotcluster.txt
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/matcher.kch  /opt/kyoto/matcher.kch
-    gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp -n gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/prefilter.kch  /opt/kyoto/prefilter.kch
+    gsutil -m cp -n gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/hotcluster.txt /opt/kyoto/hotcluster.txt &
+    gsutil -o 'GSUtil:parallel_thread_count=1' -o 'GSUtil:sliced_object_download_max_components=8' cp gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/matcher.kch  /opt/kyoto/matcher.kch &
+    gsutil -o 'GSUtil:parallel_thread_count=1' -o 'GSUtil:sliced_object_download_max_components=8' cp gs://zapr_bucket/allFrequencyKyotos/hot-cluster/cluster$metadata/prefilter.kch /opt/kyoto/prefilter.kch 
 }
 
 update_tar() {
