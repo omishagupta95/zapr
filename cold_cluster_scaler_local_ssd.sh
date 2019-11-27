@@ -10,7 +10,7 @@ create_template_existing_disk() {
 }
 
 create_template_new_disk() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --local-ssd interface=NVMe --network="zapr-vpc-network" --subnet="private-1" --tags="zapr-polestar-revealer" $3 --metadata startup-script-url="gs://zapr_asr/startup-scripts/cold_startup.sh",partition=$2  --scopes="monitoring,pubsub,storage-rw"  --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="61" --custom-extensions --image="cold-cluster-instance-recreated-image-new-v18" --boot-disk-type="pd-ssd" --boot-disk-size="50" --local-ssd interface=NVMe --network="zapr-vpc-network" --subnet="private-1" --tags="zapr-polestar-revealer" $3 --metadata-from-file startup-script="./cold_startup_script.sh",partition=$2  --scopes="monitoring,pubsub,storage-rw"  --region=asia-south1
 #        --disk=name=cold-disk-$i  use this instead of create-disk flag once all disks have been created
 }
 
