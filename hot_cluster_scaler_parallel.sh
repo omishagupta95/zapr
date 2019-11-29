@@ -2,7 +2,7 @@
 set -x
 
 create_template() {
-        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="75" --custom-extensions --image="hot-cluster-instance-image-v6" --boot-disk-type="pd-ssd" --boot-disk-size="30" --network="zapr-vpc-network" --subnet="private-1" --tags="zapr-polestar-revealer" --preemptible --metadata-from-file startup-script="./hot-startup-script.sh"  --scopes="monitoring,pubsub,storage-rw" --metadata partition=$2 --region=asia-south1
+        gcloud compute instance-templates create $1 --custom-cpu="8" --custom-memory="75" --custom-extensions --image="hot-cluster-instance-image-v6" --boot-disk-type="pd-ssd" --boot-disk-size="30" --network="zapr-vpc-network" --subnet="private-1" --tags="zapr-polestar-revealer" --preemptible --metadata startup-script-url="gs://zapr_bucket/startup-script/hot_startup.sh",partition=$2  --scopes="monitoring,pubsub,storage-rw" --region=asia-south1
 }
 
 create_instance_group(){
